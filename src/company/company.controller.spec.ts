@@ -6,7 +6,7 @@ describe('CompanyController', () => {
   let controller: CompanyController;
 
   const mockCompanyService = {
-    getAllCompanies: jest.fn(),
+    get: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -27,56 +27,15 @@ describe('CompanyController', () => {
     expect(controller).toBeDefined();
   });
 
-  describe('getAll', () => {
-    it('should return all companies when no filters provided', async () => {
-      const result = [
-        { name: 'Tesla', industry: 'Automotive', yoi: '2020' },
-        { name: 'Apple', industry: 'Technology', yoi: '2021' },
-      ];
+  describe('getOne', () => {
+    it('should return a company by id', async () => {
+      const id = '123';
+      const result = { id: '123', name: 'Tesla', industry: 'Automotive' };
 
-      mockCompanyService.getAllCompanies.mockResolvedValue(result);
+      mockCompanyService.get = jest.fn().mockResolvedValue(result);
 
-      expect(await controller.getAll()).toBe(result);
-      expect(mockCompanyService.getAllCompanies).toHaveBeenCalledWith(
-        undefined,
-        undefined,
-      );
-    });
-
-    it('should filter by name', async () => {
-      const result = [{ name: 'Tesla', industry: 'Automotive', yoi: '2020' }];
-
-      mockCompanyService.getAllCompanies.mockResolvedValue(result);
-
-      expect(await controller.getAll('Tesla')).toBe(result);
-      expect(mockCompanyService.getAllCompanies).toHaveBeenCalledWith(
-        'Tesla',
-        undefined,
-      );
-    });
-
-    it('should filter by industry', async () => {
-      const result = [{ name: 'Tesla', industry: 'Automotive', yoi: '2020' }];
-
-      mockCompanyService.getAllCompanies.mockResolvedValue(result);
-
-      expect(await controller.getAll(undefined, 'Automotive')).toBe(result);
-      expect(mockCompanyService.getAllCompanies).toHaveBeenCalledWith(
-        undefined,
-        'Automotive',
-      );
-    });
-
-    it('should filter by name and industry', async () => {
-      const result = [{ name: 'Tesla', industry: 'Automotive', yoi: '2020' }];
-
-      mockCompanyService.getAllCompanies.mockResolvedValue(result);
-
-      expect(await controller.getAll('Tesla', 'Automotive')).toBe(result);
-      expect(mockCompanyService.getAllCompanies).toHaveBeenCalledWith(
-        'Tesla',
-        'Automotive',
-      );
+      expect(await controller.get(id)).toBe(result);
+      expect(mockCompanyService.get).toHaveBeenCalledWith(id);
     });
   });
 });

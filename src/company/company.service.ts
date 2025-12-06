@@ -11,24 +11,22 @@ export class CompanyService {
     private readonly logger: LoggerService,
   ) {}
 
-  async getAllCompanies(
-    name: string | undefined,
-    industry: string | undefined,
-  ): Promise<Company[]> {
+  async getCompany(id: string): Promise<Company> {
     try {
-      const companies = await this.companyModel
-        .find({
-          ...(name ? { name: { $regex: name, $options: 'i' } } : {}),
-          ...(industry
-            ? { industry: { $regex: industry, $options: 'i' } }
-            : {}),
+      const company: Company | null = await this.companyModel
+        .findOne({
+          _id: id,
         })
-        .lean() // use of lean() for to return a plain javascript object instead of a mongoose document
+        .lean()
         .exec();
 
-      this.logger.log(`Found ${companies.length} companies`, 'CompanyService');
+      if (!company) {
+        throw new Error(`Company with id ${id} not found`);
+      }
 
-      return companies;
+      this.logger.log(`Found company with id ${id}`, 'CompanyService');
+
+      return company;
     } catch (error) {
       this.logger.error('Failed to fetch companies', error, 'CompanyService');
 

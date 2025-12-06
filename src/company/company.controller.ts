@@ -7,10 +7,7 @@ export class CompanyController {
   constructor(private readonly service: CompanyService) {}
 
   @Get()
-  async getAll(
-    @Query('name') name?: string,
-    @Query('industry') industry?: string,
-  ): Promise<Company[]> {
-    return this.service.getAllCompanies(name, industry);
+  async get(@Query('id') id: string): Promise<Company> {
+    return this.service.getCompany(id);
   }
 }

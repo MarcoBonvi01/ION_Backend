@@ -9,9 +9,6 @@ export class Company {
   yoi: string; // Year of investment
 
   @Prop({ required: true })
-  sortingName: string;
-
-  @Prop({ required: true })
   name: string;
 
   @Prop()
