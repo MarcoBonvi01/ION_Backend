@@ -4,6 +4,7 @@ import { LoggerModule } from './logger/logger.module';
 import { CompanyModule } from './company/company.module';
 import { ConfigModule } from '@nestjs/config';
 import { PortfolioModule } from './portfolio/portfolio.module';
+import { WorkModule } from './work/work.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { PortfolioModule } from './portfolio/portfolio.module';
     LoggerModule, // module for logger
     CompanyModule, // module for company
     PortfolioModule, // module for portfolio
+    WorkModule, // module for works
   ],
 })
 export class AppModule {}

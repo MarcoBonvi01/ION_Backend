@@ -29,8 +29,6 @@ export class PortfolioService {
         query.sort({ [sort.field]: sort.order === 'ASC' ? 1 : -1 });
       }
 
-      console.log(sort);
-
       if (pagination) {
         query.skip(pagination.offset).limit(pagination.limit);
       }

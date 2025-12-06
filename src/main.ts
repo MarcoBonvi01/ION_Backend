@@ -7,12 +7,6 @@ const PORT = process.env.PORT || 4000;
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  console.log(
-    !process.env.FRONTEND_PORT
-      ? process.env.FRONTEND_URL
-      : process.env.FRONTEND_URL + ':' + process.env.FRONTEND_PORT,
-  );
-
   app.enableCors({
     origin: !process.env.FRONTEND_PORT
       ? process.env.FRONTEND_URL
