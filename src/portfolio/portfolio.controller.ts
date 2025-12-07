@@ -12,8 +12,8 @@ export class PortfolioController {
   async get(
     @Query('name') name?: string,
     @Query('industry') industry?: string,
-    @Query('sort') sortBy?: string,
-    @Query('order') orderBy?: 'ASC' | 'DESC',
+    @Query('order_by') sortBy?: string,
+    @Query('sort_direction') orderBy?: 'ASC' | 'DESC',
     @Query('offset') offset?: number,
     @Query('limit') limit?: number,
   ): Promise<{ companies: Company[]; count: number }> {
@@ -24,6 +24,8 @@ export class PortfolioController {
 
     const sort: SortParams | undefined =
       sortBy && orderBy ? { field: sortBy, order: orderBy } : undefined;
+
+    console.log(sort);
 
     return this.service.getPortfolio(name, industry, pagination, sort);
   }
