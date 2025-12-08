@@ -122,3 +122,20 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
+
+---
+
+## Continuous Deployment
+
+The application includes a `build.yml` workflow file that enables **automatic deployment to production** on every push to the repository.
+
+### Setup Instructions
+
+To enable automatic deployment, add the following **SSH credentials** as secrets in your repository settings:
+
+- `SSH_HOST` - Server hostname or IP address
+- `SSH_USERNAME` - SSH username
+- `SSH_KEY` - Private SSH key for authentication
+- `SSH_PORT` - SSH port (default: 22)
+
+Once configured, the workflow will automatically build and deploy the application to your production server on every push.
