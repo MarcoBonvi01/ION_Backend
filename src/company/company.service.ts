@@ -16,6 +16,9 @@ export class CompanyService {
       const company: Company | null = await this.companyModel
         .findOne({
           _id: id,
+          deleted_at: {
+            neq: null,
+          },
         })
         .lean()
         .exec();

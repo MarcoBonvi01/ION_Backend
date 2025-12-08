@@ -15,8 +15,12 @@ export class Company {
   @Prop()
   logo: string;
 
+  @Prop()
+  logo_url: string;
+
   @Prop({ type: Headquarters })
   hq: Headquarters;
+
   @Prop()
   description: string;
 
@@ -31,6 +35,15 @@ export class Company {
 
   @Prop()
   url: string;
+
+  @Prop()
+  created_at: string;
+
+  @Prop()
+  updated_at: string;
+
+  @Prop()
+  deleted_at: Date;
 }
 
 export const CompanySchema = SchemaFactory.createForClass(Company);

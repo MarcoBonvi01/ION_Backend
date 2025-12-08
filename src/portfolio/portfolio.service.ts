@@ -23,6 +23,9 @@ export class PortfolioService {
       const query = this.portfolioModel.find({
         ...(name ? { name: { $regex: name, $options: 'i' } } : {}),
         ...(industry ? { industry: { $regex: industry, $options: 'i' } } : {}),
+        deleted_at: {
+          neq: null,
+        },
       });
 
       if (sort) {
