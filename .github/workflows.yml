@@ -1,0 +1,45 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-prod:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    name: Deploy
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Deploy to Remote Server
+        env:
+          SSH_HOST: ${{ secrets.SERVER_ADDRESS }}
+          SSH_USER: root
+          SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
+        run: |
+          echo "Deploying to remote server..."
+
+          sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST << 'EOF'
+            # Stop and remove existing containers
+            docker stop backend || true
+            docker rm backend || true
+
+            # Delete existing images
+            docker rmi backend_image || true
+
+            # Move inside correct directory and the pull the repository
+            cd ./ION/backend
+            git pull origin main
+
+            # Build the Docker image
+            docker-compose -f docker-compose.yml build
+
+            # Start the containers
+            docker-compose -f docker-compose.yml up -d --build
+
+            echo "Deployment complete."
+          EOF
