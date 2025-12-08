@@ -19,7 +19,7 @@ RUN npm run build
 # Dopo la build elimino le dipendenze dev per alleggerire l'immagine
 RUN npm prune --production
 
-EXPOSE 3000
+EXPOSE 3003
 
 # Avvio il server NestJS
 CMD ["node", "dist/main.js"]
