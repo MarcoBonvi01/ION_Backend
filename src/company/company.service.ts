@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Company, CompanyDocument } from 'src/database/schemas/company.schema';
+import { Company, CompanyDocument } from '../database/schemas/company.schema';
 import { Model } from 'mongoose';
-import { LoggerService } from 'src/logger/logger.service';
+import { LoggerService } from '../logger/logger.service';
 
 @Injectable()
 export class CompanyService {
@@ -16,15 +16,13 @@ export class CompanyService {
       const company: Company | null = await this.companyModel
         .findOne({
           _id: id,
-          deleted_at: {
-            neq: null,
-          },
+          deleted_at: { $eq: null },
         })
         .lean()
         .exec();
 
       if (!company) {
-        throw new Error(`Company with id ${id} not found`);
+        throw new NotFoundException(`Company with id ${id} not found`);
       }
 
       this.logger.log(`Found company with id ${id}`, 'CompanyService');

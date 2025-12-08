@@ -25,8 +25,6 @@ export class PortfolioController {
     const sort: SortParams | undefined =
       sortBy && orderBy ? { field: sortBy, order: orderBy } : undefined;
 
-    console.log(sort);
-
     return this.service.getPortfolio(name, industry, pagination, sort);
   }
 }

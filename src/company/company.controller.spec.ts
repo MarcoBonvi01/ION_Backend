@@ -1,12 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CompanyController } from './company.controller';
 import { CompanyService } from './company.service';
+import { NotFoundException } from '@nestjs/common';
 
 describe('CompanyController', () => {
   let controller: CompanyController;
 
   const mockCompanyService = {
-    get: jest.fn(),
+    getCompany: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -32,10 +33,23 @@ describe('CompanyController', () => {
       const id = '123';
       const result = { id: '123', name: 'Tesla', industry: 'Automotive' };
 
-      mockCompanyService.get = jest.fn().mockResolvedValue(result);
+      mockCompanyService.getCompany = jest.fn().mockResolvedValue(result);
 
       expect(await controller.get(id)).toBe(result);
-      expect(mockCompanyService.get).toHaveBeenCalledWith(id);
+      expect(mockCompanyService.getCompany).toHaveBeenCalledWith(id);
+    });
+  });
+
+  describe('getOneDeleted', () => {
+    it('should throw NotFoundException if the company is deleted', async () => {
+      const id = '123';
+
+      mockCompanyService.getCompany = jest.fn().mockImplementation(() => {
+        throw new NotFoundException(`Company with id ${id} not found`);
+      });
+
+      await expect(controller.get(id)).rejects.toThrow(NotFoundException);
+      expect(mockCompanyService.getCompany).toHaveBeenCalledWith(id);
     });
   });
 });

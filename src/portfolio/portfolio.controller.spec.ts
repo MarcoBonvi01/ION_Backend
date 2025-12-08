@@ -6,7 +6,7 @@ describe('PortfolioController', () => {
   let controller: PortfolioController;
 
   const mockPortfolioService = {
-    getAllCompanies: jest.fn(),
+    getPortfolio: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -34,48 +34,65 @@ describe('PortfolioController', () => {
         { name: 'Apple', industry: 'Technology', yoi: '2021' },
       ];
 
-      mockPortfolioService.getAllCompanies.mockResolvedValue(result);
+      mockPortfolioService.getPortfolio.mockResolvedValue(result);
 
       expect(await controller.get()).toBe(result);
-      expect(mockPortfolioService.getAllCompanies).toHaveBeenCalledWith(
+      expect(mockPortfolioService.getPortfolio).toHaveBeenCalledWith(
+        undefined,
+        undefined,
         undefined,
         undefined,
       );
     });
 
     it('should filter by name', async () => {
-      const result = [{ name: 'Tesla', industry: 'Automotive', yoi: '2020' }];
+      const result = [
+        { name: 'Tesla', industry: 'Automotive', yoi: '2020' },
+        { name: 'Apple', industry: 'Technology', yoi: '2021' },
+      ];
 
-      mockPortfolioService.getAllCompanies.mockResolvedValue(result);
+      mockPortfolioService.getPortfolio.mockResolvedValue(result);
 
       expect(await controller.get('Tesla')).toBe(result);
-      expect(mockPortfolioService.getAllCompanies).toHaveBeenCalledWith(
+      expect(mockPortfolioService.getPortfolio).toHaveBeenCalledWith(
         'Tesla',
+        undefined,
+        undefined,
         undefined,
       );
     });
 
     it('should filter by industry', async () => {
-      const result = [{ name: 'Tesla', industry: 'Automotive', yoi: '2020' }];
+      const result = [
+        { name: 'Tesla', industry: 'Automotive', yoi: '2020' },
+        { name: 'Apple', industry: 'Technology', yoi: '2021' },
+      ];
 
-      mockPortfolioService.getAllCompanies.mockResolvedValue(result);
+      mockPortfolioService.getPortfolio.mockResolvedValue(result);
 
       expect(await controller.get(undefined, 'Automotive')).toBe(result);
-      expect(mockPortfolioService.getAllCompanies).toHaveBeenCalledWith(
+      expect(mockPortfolioService.getPortfolio).toHaveBeenCalledWith(
         undefined,
         'Automotive',
+        undefined,
+        undefined,
       );
     });
 
     it('should filter by name and industry', async () => {
-      const result = [{ name: 'Tesla', industry: 'Automotive', yoi: '2020' }];
+      const result = [
+        { name: 'Tesla', industry: 'Automotive', yoi: '2020' },
+        { name: 'Apple', industry: 'Technology', yoi: '2021' },
+      ];
 
-      mockPortfolioService.getAllCompanies.mockResolvedValue(result);
+      mockPortfolioService.getPortfolio.mockResolvedValue(result);
 
       expect(await controller.get('Tesla', 'Automotive')).toBe(result);
-      expect(mockPortfolioService.getAllCompanies).toHaveBeenCalledWith(
+      expect(mockPortfolioService.getPortfolio).toHaveBeenCalledWith(
         'Tesla',
         'Automotive',
+        undefined,
+        undefined,
       );
     });
   });
