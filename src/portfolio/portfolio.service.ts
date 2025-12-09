@@ -23,7 +23,7 @@ export class PortfolioService {
       const query = this.portfolioModel.find({
         ...(name ? { name: { $regex: name, $options: 'i' } } : {}),
         ...(industry ? { industry: { $regex: industry, $options: 'i' } } : {}),
-        deleted_at: { $ne: null },
+        deleted_at: null,
       });
 
       if (sort) {
@@ -39,6 +39,7 @@ export class PortfolioService {
       const count = await this.portfolioModel.countDocuments({
         ...(name ? { name: { $regex: name, $options: 'i' } } : {}),
         ...(industry ? { industry: { $regex: industry, $options: 'i' } } : {}),
+        deleted_at: null,
       });
 
       this.logger.log(
