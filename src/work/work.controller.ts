@@ -1,4 +1,9 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  InternalServerErrorException,
+  Query,
+} from '@nestjs/common';
 import { WorkService } from './work.service';
 import { PaginationParams } from 'src/common/interfaces/pagination-params.interface';
 import { SortParams } from 'src/common/interfaces/sort-params.interface';
@@ -23,6 +28,12 @@ export class WorkController {
     const sort: SortParams | undefined =
       sortBy && orderBy ? { field: sortBy, order: orderBy } : undefined;
 
-    return this.service.getWorks(pagination, sort);
+    try {
+      return this.service.getWorks(pagination, sort);
+    } catch (error) {
+      console.error('[WorkController] Error fetching works:', error);
+
+      throw new InternalServerErrorException('Failed to fetch works');
+    }
   }
 }

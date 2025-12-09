@@ -1,4 +1,9 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  InternalServerErrorException,
+  Query,
+} from '@nestjs/common';
 import { PortfolioService } from './portfolio.service';
 import { Company } from '../database/schemas/company.schema';
 import { PaginationParams } from 'src/common/interfaces/pagination-params.interface';
@@ -25,6 +30,12 @@ export class PortfolioController {
     const sort: SortParams | undefined =
       sortBy && orderBy ? { field: sortBy, order: orderBy } : undefined;
 
-    return this.service.getPortfolio(name, industry, pagination, sort);
+    try {
+      return await this.service.getPortfolio(name, industry, pagination, sort);
+    } catch (error) {
+      console.error('[PortfolioController] Error fetching portfolio:', error);
+
+      throw new InternalServerErrorException('Failed to fetch portfolio');
+    }
   }
 }

@@ -1,4 +1,9 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  InternalServerErrorException,
+  Query,
+} from '@nestjs/common';
 import { CompanyService } from './company.service';
 import { Company } from '../database/schemas/company.schema';
 
@@ -8,6 +13,12 @@ export class CompanyController {
 
   @Get()
   async get(@Query('id') id: string): Promise<Company> {
-    return this.service.getCompany(id);
+    try {
+      return this.service.getCompany(id);
+    } catch (error) {
+      console.error('[CompanyController] Error fetching company:', error);
+
+      throw new InternalServerErrorException('Failed to fetch company');
+    }
   }
 }
