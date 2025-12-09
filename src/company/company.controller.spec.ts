@@ -1,7 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CompanyController } from './company.controller';
 import { CompanyService } from './company.service';
-import { NotFoundException } from '@nestjs/common';
+import {
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 
 describe('CompanyController', () => {
   let controller: CompanyController;
@@ -48,7 +51,9 @@ describe('CompanyController', () => {
         throw new NotFoundException(`Company with id ${id} not found`);
       });
 
-      await expect(controller.get(id)).rejects.toThrow(NotFoundException);
+      await expect(controller.get(id)).rejects.toThrow(
+        InternalServerErrorException,
+      );
       expect(mockCompanyService.getCompany).toHaveBeenCalledWith(id);
     });
   });

@@ -2,6 +2,7 @@ import {
   Controller,
   Get,
   InternalServerErrorException,
+  Logger,
   Query,
 } from '@nestjs/common';
 import { CompanyService } from './company.service';
@@ -16,7 +17,7 @@ export class CompanyController {
     try {
       return this.service.getCompany(id);
     } catch (error) {
-      console.error('[CompanyController] Error fetching company:', error);
+      Logger.error('[CompanyController] Error fetching company:', error);
 
       throw new InternalServerErrorException('Failed to fetch company');
     }

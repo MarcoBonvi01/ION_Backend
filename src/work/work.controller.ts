@@ -2,6 +2,7 @@ import {
   Controller,
   Get,
   InternalServerErrorException,
+  Logger,
   Query,
 } from '@nestjs/common';
 import { WorkService } from './work.service';
@@ -31,7 +32,7 @@ export class WorkController {
     try {
       return this.service.getWorks(pagination, sort);
     } catch (error) {
-      console.error('[WorkController] Error fetching works:', error);
+      Logger.error('[WorkController] Error fetching works:', error);
 
       throw new InternalServerErrorException('Failed to fetch works');
     }

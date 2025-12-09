@@ -2,6 +2,7 @@ import {
   Controller,
   Get,
   InternalServerErrorException,
+  Logger,
   Query,
 } from '@nestjs/common';
 import { PortfolioService } from './portfolio.service';
@@ -33,7 +34,7 @@ export class PortfolioController {
     try {
       return await this.service.getPortfolio(name, industry, pagination, sort);
     } catch (error) {
-      console.error('[PortfolioController] Error fetching portfolio:', error);
+      Logger.error('[PortfolioController] Error fetching portfolio:', error);
 
       throw new InternalServerErrorException('Failed to fetch portfolio');
     }
